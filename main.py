@@ -29,7 +29,10 @@ def main():
         except: #if mines is not an int or not an int between 10 and 20
             print("Not a valid integer value for mines")
             continue
+        
+        #TODO Ask player input to play solo, against another player, or against AI 
 
+        #TODO Multiplayer turn switching
     
         ui.print_board()
         #wait for user to input on a cell (only allow left click, no flag for first click)
