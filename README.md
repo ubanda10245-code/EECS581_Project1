@@ -13,7 +13,7 @@ A 10x10 grid filled with a user specified number of mines which the player can f
 | Team Members | Roles | Github |
 | :---: | :---: | :---: |
 | Carson Schraad | Co-Scrum Master | CarsonSchraad |
-| Collin Tullis | UI/UX Designer | monrester |
+| Dhruvi Patel | UI/UX Designer | Dhruvi-2604|
 | Ethan Cook | Quality Assurance | EthansCookin |
 | Ethan Le | Configuration (Version Control) Manager | 27EthanL |
 | Kristoffer Roy Comahig | Technical Writer & Quality Assurance | KrisC341 |
