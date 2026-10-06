@@ -11,6 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parent))
 from board import Board
 from input_handler import get_input
 from user_interface import User_Interface
+from ai_solver import ai_solver
 
 def main():
     while True:
@@ -46,6 +47,10 @@ def main():
         # Populate board avoiding first click, then reveal that cell
         myBoard.populateBoard(row, col)
         myBoard.setState(row, col, False)
+
+
+        ai_solver(myBoard, "easy")
+
         ui.print_board()
 
         # Active gameplay loop
@@ -60,6 +65,10 @@ def main():
 
             myBoard.setState(row, col, is_flag)
 
+
+            # AI's move
+            ai_solver(myBoard, "easy")
+            
             # Display updated board if still playing
             if myBoard.hasWon() == 0:
                 ui.print_board()
