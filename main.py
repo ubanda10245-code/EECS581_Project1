@@ -11,6 +11,7 @@ This file loops and plays the game checking if the player has won or lost and se
 from board import Board
 from input_handler import get_input
 from user_interface import User_Interface
+from ai_solver import ai_solver
 def main():
     #game loop
     while(True):
@@ -42,10 +43,21 @@ def main():
                 print("Only a left click is allowed for your first move Try again")
                 continue
             break
-        myBoard.populateBoard(inputSelect[0], inputSelect[1]) #populate board
-        myBoard.setState(inputSelect[0], inputSelect[1]) #clear first click
+        # myBoard.populateBoard(inputSelect[0], inputSelect[1]) #populate board
+        # myBoard.setState(inputSelect[0], inputSelect[1]) #clear first click
+        # ui.print_board()
+        # print("Status: Playing")
+        myBoard.populateBoard(inputSelect[0], inputSelect[1])
+        myBoard.setState(inputSelect[0], inputSelect[1])
+
+        # Let AI move after the player's first move
+        if myBoard.hasWon() == 0:
+            ai_solver(myBoard, "easy")
+
         ui.print_board()
-        print("Status: Playing")
+
+        if myBoard.hasWon() == 0:
+            print("Status: Playing")
 
 
         while(myBoard.hasWon() == 0): #if player has not won or lost
@@ -57,8 +69,17 @@ def main():
 
             #print board (can be done hopefully painlessly with numBombNeighbors in board class)
             myBoard.setState(inputSelect[0], inputSelect[1], inputSelect[2])
+            
+            # AI's move
+            ai_solver(myBoard, "easy")
+            
+            # check if the AI ended the game
+            if myBoard.hasWon() != 0:
+                break
+            
+            # game is still going
             ui.print_board()
-            print("Status: Playing")
+            print("status: playing")
 
 
         result = myBoard.hasWon() #store win result
