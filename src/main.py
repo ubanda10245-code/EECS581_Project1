@@ -33,9 +33,11 @@ def main():
         print("Start playing\n")
         ui.print_board()
 
+        currentPlayer = 1
+
         # First move: Only allow left-click / uncover
         while True:
-            row, col, is_flag = get_input()
+            row, col, is_flag = get_input(currentPlayer)
             if row == -1:
                 print("Invalid Cell, Try Again")
                 continue
@@ -48,6 +50,8 @@ def main():
         myBoard.populateBoard(row, col)
         myBoard.setState(row, col, False)
 
+        currentPlayer = 2
+
 
         ai_solver(myBoard, "easy")
 
@@ -58,15 +62,20 @@ def main():
             print("Status: Playing")
 
             while True:
-                row, col, is_flag = get_input()
+                row, col, is_flag = get_input(currentPlayer)
                 if row != -1:
                     break
                 print("Invalid input, try again.")
 
             myBoard.setState(row, col, is_flag)
 
-
-            # AI's move
+            # Switch players after a valid move
+            if currentPlayer == 1:
+                currentPlayer = 2
+            else:
+                currentPlayer = 1
+            
+             # AI's move
             ai_solver(myBoard, "easy")
             
             # Display updated board if still playing
