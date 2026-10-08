@@ -10,9 +10,12 @@ Returns:
     (-1, -1, False) on invalid input.
 """
 
-def get_input():
+def get_input(currentPlayer):
     # Collect cell coordinate
-    raw_cell = input("Enter a cell (e.g. A1, J10): ").strip().upper()
+    raw_cell = input(
+        f"Player {currentPlayer} - Enter a cell (e.g. A1, J10): "
+    ).strip().upper()
+
     if not raw_cell:
         print("Error: Empty cell input.")
         return (-1, -1, False)
