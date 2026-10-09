@@ -28,6 +28,26 @@ def main():
             print("Not a valid integer value for mines. Please enter a number between 10 and 20.")
             continue
 
+        # Added 10/9 Niles C: Ask the player to choose a game mode.
+        while True:
+            gameMode = input("Choose game mode: Solo, Multiplayer, or AI: ").strip().lower()
+            if gameMode in ("solo", "multiplayer", "ai"):
+                break
+            print("Invalid game mode. Enter Solo, Multiplayer, or AI.")
+
+        # Added 10/9 Niles C: Store AI difficulty for the next team member to use.
+        aiDifficulty = None
+        if gameMode == "ai":
+            while True:
+                aiDifficulty = input("Choose AI difficulty: Easy, Medium, or Hard: ").strip().lower()
+                if aiDifficulty in ("easy", "medium", "hard"):
+                    break
+                print("Invalid difficulty. Enter Easy, Medium, or Hard.")
+
+        # Added 10/9 Niles C: Initialize the multiplayer player variable.
+        if gameMode == "multiplayer":
+            currentPlayer = 1
+
         myBoard = Board(mines)
         ui = User_Interface(myBoard)
         print("Start playing\n")
