@@ -82,25 +82,38 @@ def main():
         while myBoard.hasWon() == 0:
             print("Status: Playing")
 
-            while True:
-                row, col, is_flag = get_input(currentPlayer)
-                if row != -1:
+            if gameMode == "ai":
+                # Human's turn
+                while True:
+                    row, col, is_flag = get_input(1)
+                    if row != -1:
+                        break
+                    print("Invalid input, try again.")
+
+                myBoard.setState(row, col, is_flag)
+
+                if myBoard.hasWon() != 0:
                     break
-                print("Invalid input, try again.")
 
-            myBoard.setState(row, col, is_flag)
+                ui.print_board()
 
-            # Switch players after a valid move
-            if currentPlayer == 1:
-                currentPlayer = 2
-            else:
-                currentPlayer = 1
-            
-             # AI's move
-            if (gameMode == "ai" and myBoard.hasWon == 0):
+                # AI's turn
                 ai_solver(myBoard, aiDifficulty or "easy")
-            
-            # Display updated board if still playing
+
+            else:
+                # Existing Solo / Multiplayer human turn
+                while True:
+                    row, col, is_flag = get_input(currentPlayer)
+                    if row != -1:
+                        break
+                    print("Invalid input, try again.")
+
+                myBoard.setState(row, col, is_flag)
+
+                if gameMode == "multiplayer":
+                    currentPlayer = 2 if currentPlayer == 1 else 1
+
+            # Display updated board only while the game is active
             if myBoard.hasWon() == 0:
                 ui.print_board()
 
