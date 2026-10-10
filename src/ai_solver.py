@@ -119,6 +119,9 @@ def find_121_pattern(board):
 
 def ai_solver(board, difficulty):
     if difficulty == "easy":
+        """ Uncover a random cell, avoiding uncovered and flagged cells.
+        """
+  
         possible_cells = []
 
         # Find all cells the AI is allowed to uncover
@@ -144,16 +147,20 @@ def ai_solver(board, difficulty):
             print(f"AI uncovered cell [{column_letter}{row + 1}]")
 
     elif difficulty == "medium":
+        """ Flag cells when the number of hidden neighbors equals the clue's remaining mine count.
+            Uncover cells if the number of flagged neighbors equals the clue's mine count.
+            Clue is the number of mines adjacent to a revealed cell.
+        """
         hidden_states = (0, 3)
         flagged_states = (1, 4)
 
         # Apply the flagging rule before considering any cells to uncover.
         for row in range(board.getRows()):
             for col in range(board.getCols()):
-                if board.getCellState(row, col) != 2: #Skips cells already uncovered are marked safe 
+                if board.getCellState(row, col) != 2: #Skips cells already uncovered
                     continue
 
-                neighbors = []
+                neighbors = [] # Gather all neighboring cells
                 for dr in (-1, 0, 1):
                     for dc in (-1, 0, 1):
                         if dr == 0 and dc == 0:
@@ -162,17 +169,23 @@ def ai_solver(board, difficulty):
                         if board.in_bounds(nr, nc):
                             neighbors.append((nr, nc))
 
-                hidden_neighbors = [
-                    (nr, nc) for nr, nc in neighbors
-                    if board.getCellState(nr, nc) in hidden_states
-                ]
+                hidden_neighbors = []
+                flagged_count = 0
+                for nr, nc in neighbors:
+                    state = board.getCellState(nr, nc)
+                    if state in hidden_states: 
+                        hidden_neighbors.append((nr, nc))
+                    elif state in flagged_states:
+                        flagged_count += 1
+
                 clue = board.numBombNeighbors(row, col)
 
-                if hidden_neighbors and len(hidden_neighbors) == clue:
+                # If the number of hidden neighbors equals the clue minus the flagged count, flag all hidden neighbors.
+                if hidden_neighbors and len(hidden_neighbors) == clue - flagged_count: 
                     for nr, nc in hidden_neighbors:
-                        board.setState(nr, nc, True)
+                        board.setState(nr, nc, True) # Flag the cell
                         column_letter = chr(ord("A") + nc)
-                        print(f"AI flagged cell [{column_letter}{nr + 1}]")
+                        print(f"AI flagged cell [{column_letter}{nr + 1}]") 
                     return
 
         # If flagging is not possible, uncover neighbors when all mines are flagged.
@@ -188,6 +201,7 @@ def ai_solver(board, difficulty):
                         if dr == 0 and dc == 0:
                             continue
                         nr, nc = row + dr, col + dc
+                        # skip out-of-bounds neighbors
                         if not board.in_bounds(nr, nc):
                             continue
 
@@ -198,6 +212,8 @@ def ai_solver(board, difficulty):
                             flagged_count += 1
 
                 clue = board.numBombNeighbors(row, col)
+
+                # If the number of flagged neighbors equals the clue, uncover all hidden neighbors.
                 if hidden_neighbors and flagged_count == clue:
                     for nr, nc in hidden_neighbors:
                         board.setState(nr, nc, False)
@@ -219,6 +235,8 @@ def ai_solver(board, difficulty):
             print(f"AI uncovered cell [{column_letter}{row + 1}]")
 
     elif difficulty == "hard":
+        """ 
+        """
         hidden_states = (0, 3)
         flagged_states = (1, 4)
 
