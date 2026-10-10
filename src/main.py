@@ -73,7 +73,8 @@ def main():
         currentPlayer = 2
 
 
-        ai_solver(myBoard, "easy")
+        if (gameMode == "ai"):
+            ai_solver(myBoard, aiDifficulty or "easy")
 
         ui.print_board()
 
@@ -96,7 +97,8 @@ def main():
                 currentPlayer = 1
             
              # AI's move
-            ai_solver(myBoard, "easy")
+            if (gameMode == "ai" and myBoard.hasWon == 0):
+                ai_solver(myBoard, aiDifficulty or "easy")
             
             # Display updated board if still playing
             if myBoard.hasWon() == 0:
