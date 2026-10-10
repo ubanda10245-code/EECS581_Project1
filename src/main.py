@@ -70,8 +70,8 @@ def main():
         myBoard.populateBoard(row, col)
         myBoard.setState(row, col, False)
 
-        currentPlayer = 2
-
+        # In Solo and AI mode, the player is always player 1.
+        currentPlayer = 2 if gameMode == "multiplayer" else 1
 
         if (gameMode == "ai"):
             ai_solver(myBoard, aiDifficulty or "easy")
@@ -104,9 +104,22 @@ def main():
                 # Existing Solo / Multiplayer human turn
                 while True:
                     row, col, is_flag = get_input(currentPlayer)
-                    if row != -1:
-                        break
-                    print("Invalid input, try again.")
+                    # Prevent invalid input from proceeding
+                    if row == -1:
+                        print("Invalid input, try again.")
+                        continue
+
+                    # Prevent flagging an uncovered cell
+                    cell_state = myBoard.getCellState(row, col)
+                    if is_flag and cell_state == 2:
+                        print("Cannot flag an uncovered cell. Try again.")
+                        continue
+
+                    # Prevent uncovering a flagged cell or an already uncovered cell
+                    if not is_flag and cell_state in (1, 2, 4):
+                        print("Cell is flagged or already uncovered. Try again.")
+                        continue
+                    break
 
                 myBoard.setState(row, col, is_flag)
 
