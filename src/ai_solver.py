@@ -30,6 +30,7 @@ def find_121_pattern(board):
                     (row + 2 * dr, col + 2 * dc)
                 ]
 
+                # Must be in bounds and already uncovered
                 if not all(
                     board.in_bounds(r, c)
                     and board.getCellState(r, c) == 2
@@ -37,6 +38,7 @@ def find_121_pattern(board):
                 ):
                     continue
 
+                # Must have the correct values and order
                 clue_values = [
                     board.numBombNeighbors(r, c)
                     for r, c in clues
@@ -235,7 +237,9 @@ def ai_solver(board, difficulty):
             print(f"AI uncovered cell [{column_letter}{row + 1}]")
 
     elif difficulty == "hard":
-        """ 
+        """ Medium difficulty rules plus the 1-2-1 pattern rule.
+            If three revealed clues form a 1-2-1 pattern, 
+            the AI can find the positions of mines and safe cells.
         """
         hidden_states = (0, 3)
         flagged_states = (1, 4)
